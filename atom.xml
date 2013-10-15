@@ -4,7 +4,7 @@
   <title><![CDATA[Chawarong's Blog]]></title>
   <link href="http://chawarong.github.io/atom.xml" rel="self"/>
   <link href="http://chawarong.github.io/"/>
-  <updated>2013-10-14T23:55:39+07:00</updated>
+  <updated>2013-10-15T22:06:22+07:00</updated>
   <id>http://chawarong.github.io/</id>
   <author>
     <name><![CDATA[Chawarong Songserm]]></name>
@@ -12,6 +12,326 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to create an NFS mount point on CentOS 6.4]]></title>
+    <link href="http://chawarong.github.io/blog/2013/10/15/how-to-create-an-nfs-mount-point-on-centos-6-dot-4/"/>
+    <updated>2013-10-15T21:51:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2013/10/15/how-to-create-an-nfs-mount-point-on-centos-6-dot-4</id>
+    <content type="html"><![CDATA[<p>This is the instruction to create a mount point on CentOS 6.4</p>
+
+<p><a href="http://www.techotopia.com/index.php/Using_NFS_to_Share_CentOS_6_Folders_with_Remote_Linux_and_UNIX_Systems">Reference</a><br/>
+<a href="https://help.ubuntu.com/community/NFSv4Howto">NFSv4Howto</a></p>
+
+<h3>On a server</h3>
+
+<ol>
+<li><p>Check if nfs is installed</p>
+
+<pre><code> $ rpm -qa | grep nfs  
+ $ service nfs status`
+</code></pre></li>
+<li><p>Add a mount point</p>
+
+<pre><code> $ vi /etc/exports
+</code></pre></li>
+</ol>
+
+
+<p>  In the above line, <export> is replaced by the directory to be exported, <host1> is the name or
+  IP address of the system to which access is being granted and <options> represents the restrictions
+  that are to be imposed on that access (read only, read write etc).</p>
+
+<blockquote><p>format: &lt;export&gt; &lt;host1&gt;(&lt;options&gt;) &lt;host2&gt;(&lt;options&gt;)&hellip;</p>
+
+<p>example:<br/>
+/datafiles 192.168.2.38(ro)<br/>
+/home/demo <em>(rw)<br/>
+/tmp       </em>(rw,sync)<br/>
+/vol1      192.168.2.21(ro,sync)</p></blockquote>
+
+<ol>
+<li><p>The directories must be exported.</p>
+
+<pre><code> $ exportfs -a
+</code></pre>
+
+<p> To view exported file system</p>
+
+<pre><code> $ exportfs
+</code></pre></li>
+<li><p>Turn on nfs at start up</p>
+
+<pre><code> $ chkconfig nfs on
+ $ chkconfig --list nfs
+ $ service nfs start
+</code></pre></li>
+</ol>
+
+
+<p>Note: for each options available, read <a href="http://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-nfs-server-config-exports.html">this link</a></p>
+
+<h3>On a client</h3>
+
+<ol>
+<li><p>Make a local folder</p>
+
+<pre><code> $ mkdir /myfolder
+</code></pre></li>
+<li><p>Issue this command</p>
+
+<pre><code> $ sudo mount -t nfs -v [ip or hostname]:/myfolder /myfolder
+</code></pre></li>
+</ol>
+
+
+<h2>Troubleshooting</h2>
+
+<ul>
+<li><p>Most of the time, keep an eye on /var/log/message. This is a typical error when nfs rejects a client connect</p>
+
+<pre><code>  rpc.mountd[30666]: refused mount request from x.x.x.x for /ster_storage (/ster_storage): illegal port 64877
+</code></pre>
+
+<p>  it&rsquo;s because it can&rsquo;t resolve name of the client connected to it. NFS typically wants name resolution for
+  clients connecting to it, and if it can&rsquo;t get that, then it will deny access.</p>
+
+<p>  An entry in the hosts file is usually sufficient for me.</p></li>
+<li><p>Check with firewall and SELinux</p>
+
+<pre><code>  $ iptables -L  
+  $ getenforce  
+</code></pre></li>
+<li><p>On Mac client, it connects to NFS using insecure port. Using the insecure option allows clients such as Mac OS X to connect on insecure ports.
+<a href="http://blogaristoo.lqx.net/index.php/mounting-a-linux-nfs-server-on-mac-os-x-10-6">link</a></p>
+
+<pre><code>  rpc.mountd[31257]: authenticated mount request from x.x.x.x:1017 for /foster_storage (/foster_storage)
+
+
+  $ vi /etc/exports
+  /datafiles 192.168.0.0/16(ro,insecure)
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to Varnish &amp; HAProxy]]></title>
+    <link href="http://chawarong.github.io/blog/2013/10/15/how-to-varnish-and-haproxy/"/>
+    <updated>2013-10-15T21:48:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2013/10/15/how-to-varnish-and-haproxy</id>
+    <content type="html"><![CDATA[<h3>My setup</h3>
+
+<p><code>
+[varnish] -- [haproxy] -- [nginx] -- [puma]
+</code></p>
+
+<h1>Varnish Cache</h1>
+
+<h3>Why use <a href="https://www.varnish-cache.org/">Varnish</a>?</h3>
+
+<ul>
+<li>To reduce server load, especially CPU works.</li>
+<li>To make a website load faster, because cache stored in RAM.</li>
+<li>To gain more visitors.</li>
+</ul>
+
+
+<p>Varnish is a web application accelerator. You install it in front of your web application and it will speed it up significantly.</p>
+
+<h3>Installation</h3>
+
+<p>Read more at <a href="http://www.servermom.com/install-varnish-3-to-run-with-apache-2-on-ubuntu-server/380/#mbiVGxmW1aChzKB2.99  ">http://www.servermom.com/install-varnish-3-to-run-with-apache-2-on-ubuntu-server/380/#mbiVGxmW1aChzKB2.99  </a>
+Note: user precise repo for 12.04, 13.04</p>
+
+<pre><code>    $ curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add -
+    $ echo "deb http://repo.varnish-cache.org/ubuntu/ precise varnish-3.0" | sudo tee -a /etc/apt/sources.list
+    $ sudo apt-get update
+    $ sudo apt-get install varnish
+    $ sudo vi /etc/varnish/default.vcl
+</code></pre>
+
+<p>Make it looks like this</p>
+
+<pre><code>    backend default {
+        .host = "33.33.13.31";
+        .port = "8080";
+    }
+</code></pre>
+
+<p>See example of configuration <a href="http://blog.hamzahkhan.com/2009/09/30/nginx-varnish-haproxy-and-thinlighttpd/">here.</a>
+Open a file configured for startup varnish</p>
+
+<pre><code>    $ vi /etc/default/varnish
+</code></pre>
+
+<p>Listen on port 80, administration on localhost:6082, and forward to
+one content server selected by the vcl file, based on the request.  Use a 1GB
+fixed-size cache file.</p>
+
+<pre><code>    DAEMON_OPTS="-a :80 \
+                 -T localhost:6082 \
+                 -f /etc/varnish/default.vcl \
+                 -S /etc/varnish/secret \
+                 -s malloc,256m"
+</code></pre>
+
+<p>Now you can test your server and it should work fine now. Using steps explained above your site will load faster and your server will be lighter in load. Also, by default as configured above in step 3, Vanish will use 256mb of your allocated RAM to store all cache files generated by the service. Please edit it to match your server specs. Edit that value to lower number If you are on a VPS with low amount of RAM. But you may also allocate x gb of your RAM if you are on Dedicated server.</p>
+
+<p>To turn on varnishlog, edit this file and uncomment <code>VARNISHLOG_ENABLED=1</code></p>
+
+<pre><code>    $ sudo vi /etc/default/varnishlog
+</code></pre>
+
+<h3>Usage</h3>
+
+<p>To start|stop|restart varnish</p>
+
+<pre><code>    $ sudo /etc/init.d/varnish start|stop|restart 
+</code></pre>
+
+<p>To view varnishlog to see if caching works properly</p>
+
+<pre><code>    $ sudo varnishlog
+
+    (need to find out how to read it.)
+</code></pre>
+
+<p>To view varnishstat to see performance of cache</p>
+
+<pre><code>    $ sudo varnishstat
+
+    (need to find out how to read it.)
+</code></pre>
+
+<p>To see if the webpage loaded via varnish, on Firefox, use Firebug > Net > (expand any request) > Header<br/>
+You should see in the header:</p>
+
+<pre><code>    Via 1.1 varnish
+</code></pre>
+
+<p>Read more at <a href="http://www.servermom.com/install-varnish-3-to-run-with-apache-2-on-ubuntu-server/380/#mbiVGxmW1aChzKB2.99">http://www.servermom.com/install-varnish-3-to-run-with-apache-2-on-ubuntu-server/380/#mbiVGxmW1aChzKB2.99</a></p>
+
+<h3>VCL (Varnish Configuration Languages)</h3>
+
+<p>The VCL language is a small domain-specific language designed to be used to define request handling and document caching policies</p>
+
+<p><a href="https://www.varnish-cache.org/docs/3.0/reference/vcl.html">Document</a>
+<a href="https://www.varnish-cache.org/trac/wiki/VCLExamples">Examples</a></p>
+
+<h3>Why no SSL?</h3>
+
+<p>Varnish itself does not support (and with good reason), so we need another program to provide the secure connection.</p>
+
+<h1>HAProxy</h1>
+
+<h3>Why <a href="http://haproxy.1wt.eu/">HAProxy</a>?</h3>
+
+<ul>
+<li><p>HAProxy has a huge list of features for reverse proxying that nginx
+hasn&rsquo;t, varnish has the same for caching.</p></li>
+<li><p>HAProxy as a balancer &ndash; it has more refined backend
+status/administrative page (<a href="http://demo.1wt.eu/">http://demo.1wt.eu/</a> (without the admin features)).
+The nginx upstream module is lacking in this area</p></li>
+<li><p>HAProxy have some features that Nginx still doesn&rsquo;t have. Like backend max
+connections and frontend queue. So you can do throtlling to prevent your
+backend (DOS) and keep request from client in front. So the didn&rsquo;t get
+HTTP 500.</p></li>
+<li><p>Another feature is splice system call, which makes HAProxy really fast with
+low system load, that means the http payload not even touches the user-space, and the kernel just does a zero
+copy. Are you able to forward 20Gbps with nginx on a single machine?</p></li>
+</ul>
+
+
+<h3>Installation</h3>
+
+<p>On ubuntu 13.04 or later.</p>
+
+<pre><code>    $ sudo apt-get install haproxy
+    $ haproxy -v
+      HA-Proxy version 1.4.18 2011/09/16
+      Copyright 2000-2011 Willy Tarreau &lt;w@1wt.eu&gt;
+</code></pre>
+
+<p>To configure it.</p>
+
+<pre><code>    $ sudo vi haproxy.cfg 
+</code></pre>
+
+<p>To start|stop|restart.</p>
+
+<pre><code>    $ sudo service haproxy start|stop|restart 
+</code></pre>
+
+<p>To see if all the ports configured are listening.</p>
+
+<pre><code>    $ netstat -antp  | grep LIS
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Working with MySQL user privileges]]></title>
+    <link href="http://chawarong.github.io/blog/2013/10/15/how-to-mysql-user-privileges/"/>
+    <updated>2013-10-15T21:44:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2013/10/15/how-to-mysql-user-privileges</id>
+    <content type="html"><![CDATA[<h4>Allow non localhost db user to connect</h4>
+
+<ol>
+<li><p>allow binding from other hosts other than localhost</p>
+
+<pre><code> vi /etc/mysql/my.cnf
+   remove bind-address = 127.0.0.1
+</code></pre></li>
+<li><p>check and see the current privileges on hosts</p>
+
+<pre><code> mysql&gt; use mysql;
+ mysql&gt; select * from user;
+   see if there is host = localhost and user = root which will not allow non localhost to access
+</code></pre></li>
+<li><p>grant the user with % (all hosts)</p>
+
+<pre><code> mysql&gt; GRANT ALL ON *.* TO root@'%' IDENTIFIED BY '[password same as root@local e.g. 5678
+ # e.g. GRANT ALL ON *.* TO root@'%' IDENTIFIED BY '5678';
+
+ mysql&gt; (optional) delete from user where host = 'localhost' and user = 'root';
+ mysql&gt; flush privileges;
+</code></pre></li>
+</ol>
+
+
+<h4>Create a new user</h4>
+
+<ol>
+<li><p>create a user</p>
+
+<pre><code> mysql&gt; CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'mypass';
+ mysql&gt; CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypass';
+</code></pre></li>
+<li><p>grant all privileges</p>
+
+<pre><code> mysql&gt; GRANT ALL ON *.* TO 'myuser'@'localhost';
+ mysql&gt; GRANT ALL ON *.* TO 'myuser'@'%';
+</code></pre></li>
+</ol>
+
+
+<p>or grant just enough</p>
+
+<pre><code>    mysql&gt; GRANT DELETE,INSERT,SELECT,UPDATE on mydatabase.* TO 'myuser'@'localhost';       
+    mysql&gt; flush privileges;
+</code></pre>
+
+<ol>
+<li><p>to see the privileges</p>
+
+<pre><code> mysql&gt; SHOW GRANTS FOR mysql;
+</code></pre></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The problem with Pingdom]]></title>

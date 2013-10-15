@@ -5,12 +5,12 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>about - Chawarong's Blog</title>
+	<title>How to create an NFS mount point on CentOS 6.4 - Chawarong's Blog</title>
 	<meta name="author" content="Chawarong Songserm">
 
 	
-	<meta name="description" content="
-">
+	<meta name="description" content="How to Create an NFS Mount Point on CentOS 6.4 This is the instruction to create a mount point on CentOS 6.4 Reference
+NFSv4Howto On a server Check &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +20,7 @@
 
 	<link href="/atom.xml" rel="alternate" title="Chawarong's Blog" type="application/atom+xml">
 	
-	<link rel="canonical" href="http://chawarong.github.io/about/">
+	<link rel="canonical" href="http://chawarong.github.io/blog/2013/10/15/how-to-create-an-nfs-mount-point-on-centos-6-dot-4/">
 	<link href="/favicon.png" rel="shortcut icon">
 	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 	<link href="/stylesheets/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -94,12 +94,105 @@
 				
 			
 			<div class="mid-col-container">
-				<div id="content" class="inner"><article class="page">
-    
-    <h1 class="title">About</h1>
-    
-    <div class="entry-content">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">How to Create an NFS Mount Point on CentOS 6.4</h1>
+	<div class="entry-content" itemprop="articleBody"><p>This is the instruction to create a mount point on CentOS 6.4</p>
+
+<p><a href="http://www.techotopia.com/index.php/Using_NFS_to_Share_CentOS_6_Folders_with_Remote_Linux_and_UNIX_Systems">Reference</a><br/>
+<a href="https://help.ubuntu.com/community/NFSv4Howto">NFSv4Howto</a></p>
+
+<h3>On a server</h3>
+
+<ol>
+<li><p>Check if nfs is installed</p>
+
+<pre><code> $ rpm -qa | grep nfs  
+ $ service nfs status`
+</code></pre></li>
+<li><p>Add a mount point</p>
+
+<pre><code> $ vi /etc/exports
+</code></pre></li>
+</ol>
+
+
+<p>  In the above line, <export> is replaced by the directory to be exported, <host1> is the name or
+  IP address of the system to which access is being granted and <options> represents the restrictions
+  that are to be imposed on that access (read only, read write etc).</p>
+
+<blockquote><p>format: &lt;export&gt; &lt;host1&gt;(&lt;options&gt;) &lt;host2&gt;(&lt;options&gt;)&hellip;</p>
+
+<p>example:<br/>
+/datafiles 192.168.2.38(ro)<br/>
+/home/demo <em>(rw)<br/>
+/tmp       </em>(rw,sync)<br/>
+/vol1      192.168.2.21(ro,sync)</p></blockquote>
+
+<ol>
+<li><p>The directories must be exported.</p>
+
+<pre><code> $ exportfs -a
+</code></pre>
+
+<p> To view exported file system</p>
+
+<pre><code> $ exportfs
+</code></pre></li>
+<li><p>Turn on nfs at start up</p>
+
+<pre><code> $ chkconfig nfs on
+ $ chkconfig --list nfs
+ $ service nfs start
+</code></pre></li>
+</ol>
+
+
+<p>Note: for each options available, read <a href="http://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-nfs-server-config-exports.html">this link</a></p>
+
+<h3>On a client</h3>
+
+<ol>
+<li><p>Make a local folder</p>
+
+<pre><code> $ mkdir /myfolder
+</code></pre></li>
+<li><p>Issue this command</p>
+
+<pre><code> $ sudo mount -t nfs -v [ip or hostname]:/myfolder /myfolder
+</code></pre></li>
+</ol>
+
+
+<h2>Troubleshooting</h2>
+
+<ul>
+<li><p>Most of the time, keep an eye on /var/log/message. This is a typical error when nfs rejects a client connect</p>
+
+<pre><code>  rpc.mountd[30666]: refused mount request from x.x.x.x for /ster_storage (/ster_storage): illegal port 64877
+</code></pre>
+
+<p>  it&rsquo;s because it can&rsquo;t resolve name of the client connected to it. NFS typically wants name resolution for
+  clients connecting to it, and if it can&rsquo;t get that, then it will deny access.</p>
+
+<p>  An entry in the hosts file is usually sufficient for me.</p></li>
+<li><p>Check with firewall and SELinux</p>
+
+<pre><code>  $ iptables -L  
+  $ getenforce  
+</code></pre></li>
+<li><p>On Mac client, it connects to NFS using insecure port. Using the insecure option allows clients such as Mac OS X to connect on insecure ports.
+<a href="http://blogaristoo.lqx.net/index.php/mounting-a-linux-nfs-server-on-mac-os-x-10-6">link</a></p>
+
+<pre><code>  rpc.mountd[31257]: authenticated mount request from x.x.x.x:1017 for /foster_storage (/foster_storage)
+
+
+  $ vi /etc/exports
+  /datafiles 192.168.0.0/16(ro,insecure)
+</code></pre></li>
+</ul>
+
 </div>
+
 </article>
 
 	<div class="share">
@@ -115,7 +208,6 @@
 	</div>
   <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
 </div>
-
 
 
 </div>
