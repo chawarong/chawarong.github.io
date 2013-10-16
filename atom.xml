@@ -4,7 +4,7 @@
   <title><![CDATA[Chawarong's Blog]]></title>
   <link href="http://chawarong.github.io/atom.xml" rel="self"/>
   <link href="http://chawarong.github.io/"/>
-  <updated>2013-10-16T06:44:31+07:00</updated>
+  <updated>2013-10-16T23:58:12+07:00</updated>
   <id>http://chawarong.github.io/</id>
   <author>
     <name><![CDATA[Chawarong Songserm]]></name>
@@ -12,6 +12,110 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to configure networking on Ubuntu]]></title>
+    <link href="http://chawarong.github.io/blog/2013/10/16/how-to-configure-networking-on-ubuntu/"/>
+    <updated>2013-10-16T23:56:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2013/10/16/how-to-configure-networking-on-ubuntu</id>
+    <content type="html"><![CDATA[<h3>Configure network using init networking (text mode)</h3>
+
+<pre><code>    /etc/network/interfaces
+</code></pre>
+
+<p>12.04 or later</p>
+
+<pre><code>    $ sudo /etc/init.d/networking restart 
+</code></pre>
+
+<p>Normally dns-* option in /etc/resolv.conf can be configured in
+/etc/network/interfaces. Don&rsquo;t need to specify it in /etc/resolvconf/resolv.conf.d</p>
+
+<pre><code>    dns-search
+    dns-nameserver
+    dns-nameservers
+</code></pre>
+
+<p>/etc/resolv.conf is an symlink to /run/resolvconf/resolv.conf
+or /etc/resolvconf/run/resolv.conf</p>
+
+<p>note: in resolv.conf, do use &ldquo;search&rdquo; instead of &ldquo;domain&rdquo; option
+because the search feature supersedes the domain feature. Unlike domain, search accepts multiple arguments.</p>
+
+<p>Once configured in /etc/network/interfaces, use resolvconf tool</p>
+
+<pre><code>    $ man resolvconf
+    $ resolvconf -u 
+</code></pre>
+
+<p>If /etc/resolv.conf doesn&rsquo;t look right, maybe the resolvconf interface database needs to be updated by -d (delete) and -a (add) arguments</p>
+
+<pre><code>    $ resolvconf -d eth0
+    $ ls /etc/resolvconf/run/interface       # you shouldn't see eth0 file
+    $ resolvconf -a eth0
+    $ ls /etc/resolvconf/run/interface       # now you should see the file and its content matched yours
+</code></pre>
+
+<p>In otherwords, to update the database you have to call resolvconf with the -a or -d option.
+That happens behind the scenes when you run ifup or ifdown.
+So, normally, as with any other change to /etc/network/interfaces, to activate changes to
+the dns-* options you have to ifdown the interface in question and ifup it again. Or you can reboot.</p>
+
+<p><a href="http://askubuntu.com/questions/224966/how-do-i-get-resolvconf-to-regenerate-resolv-conf-after-i-change-etc-network-in">referrence</a></p>
+
+<p><strong><em> If you don&rsquo;t want resolv.conf to take effect, make /etc/resolv.conf a regular file </em></strong></p>
+
+<h4>check if resolvconf install</h4>
+
+<pre><code>    $ dpkg --list | grep resolv
+</code></pre>
+
+<p>if not installed</p>
+
+<pre><code>    $ sudo apt-get install resolvconf
+</code></pre>
+
+<p>add config in /etc/resolvconf/resolv.conf.d/head</p>
+
+<p>agian, /etc/resolv.conf is an symlink to /run/resolvconf/resolv.conf
+or /etc/resolvconf/run/resolv.conf</p>
+
+<h3>Configure network using network manager gui (graphic mode)</h3>
+
+<p>restart all interface</p>
+
+<pre><code>    $ sudo service network-manager restart
+</code></pre>
+
+<p>restart specific interface</p>
+
+<pre><code>    $ sudo service network-interface restart INTERFACE=eth0
+</code></pre>
+
+<h3>Caveat</h3>
+
+<p>There is a bug that if 2 network interfaces configured on network manager gui and/or
+/etc/network/interfaces, there will be confusion. Suggestion is to configure on
+/etc/network/interfaces on both interfaces.</p>
+
+<p>error message looks similar to this</p>
+
+<pre><code>    syslog.1:Oct  6 12:32:26 myhost NetworkManager[763]: &lt;info&gt; Unmanaged Device found; state CONNECTED forced. (see http://bugs.launchpad.net/bugs/191889)
+    syslog.1:Oct  6 12:32:26 myhost NetworkManager[763]: &lt;info&gt; Activation (eth0) Beginning DHCPv4 transaction (timeout in 45 seconds)
+    syslog.1:Oct  6 12:32:26 myhost NetworkManager[763]: &lt;info&gt; dhclient started with pid 14990
+    syslog.1:Oct  6 12:32:26 myhost NetworkManager[763]: &lt;info&gt; Activation (eth0) Beginning IP6 addrconf.
+    syslog.1:Oct  6 12:32:26 myhost NetworkManager[763]: &lt;info&gt; Activation (eth0) Stage 3 of 5 (IP Configure Start) complete.
+    syslog.1:Oct  6 12:32:26 myhost NetworkManager[763]: &lt;info&gt; (eth0): DHCPv4 state changed nbi -&gt; preinit
+    syslog.1:Oct  6 12:32:46 myhost NetworkManager[763]: &lt;info&gt; (eth0): IP6 addrconf timed out or failed.
+    syslog.1:Oct  6 12:32:46 myhost NetworkManager[763]: &lt;info&gt; Activation (eth0) Stage 4 of 5 (IP6 Configure Timeout) scheduled...
+    syslog.1:Oct  6 12:32:46 myhost NetworkManager[763]: &lt;info&gt; Activation (eth0) Stage 4 of 5 (IP6 Configure Timeout) started...
+    syslog.1:Oct  6 12:32:46 myhost NetworkManager[763]: &lt;info&gt; Activation (eth0) Stage 5 of 5 (IP Configure Commit) started...
+    syslog.1:Oct  6 12:32:46 myhost NetworkManager[763]: &lt;info&gt; Activation (eth0) Stage 5 of 5 (IP Configure Commit) failed (no IP configuration found)
+</code></pre>
+
+<p><a href="http://bugs.launchpad.net/bugs/191889">link to bug</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to create an NFS mount point on CentOS 6.4]]></title>
