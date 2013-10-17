@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Blog Archives - Chawarong's Blog</title>
+	<title>Using _default_ in VirtualHost in Apache - Chawarong's Blog</title>
     <meta name="author" content="Chawarong Songserm">
     
-	<meta name="description" content="2013 Using _default_ in VirtualHost in Apache Oct 17 How to Configure Networking on Ubuntu Oct 16 How to Create an NFS Mount Point on CentOS 6.4 Oct &hellip;">
+	<meta name="description" content="Using default vhost to serve unspecified IP &amp; port i.e. Catching every request to any unspecified IP address and port, i.e., an address/port &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -106,128 +106,52 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        
+        <article class="post">
+	<h2 class="title">Using _default_ in VirtualHost in Apache</h2>
+	<div class="entry-content"><h4>Using <em>default</em> vhost to serve unspecified IP &amp; port</h4>
+
+<p>i.e. Catching every request to any unspecified IP address and port, i.e., an address/port combination that is not used for any other virtual host</p>
+
+<pre><code>    &lt;VirtualHost _default_:*&gt;
+      DocumentRoot /www/default
+    &lt;/VirtualHost&gt; 
+</code></pre>
+
+<p>A default vhost never serves a request that was sent to an address/port that is used for name-based vhosts.</p>
+
+<pre><code>    &lt;VirtualHost _default_:80&gt;
+    DocumentRoot /www/default80
+    # ...
+    &lt;/VirtualHost&gt;
+
+    &lt;VirtualHost _default_:*&gt;
+    DocumentRoot /www/default
+    # ...
+    &lt;/VirtualHost&gt; 
+</code></pre>
+
+<p>This is the same as the 1st one, but serve port 80 pointing to /www/default80</p>
+</div>
+
+<div class="meta">
 	
-
-
-	
-	
-	<section class="archives"><h1 class="year">2013</h1>
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/17/using-default-in-virtualhost-in-apache/">Using _default_ in VirtualHost in Apache</a></h2>
-	<div class="meta">
-		<span class="date">Oct 17</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
+</div>
 </article>
 
-
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/16/how-to-configure-networking-on-ubuntu/">How to Configure Networking on Ubuntu</a></h2>
-	<div class="meta">
-		<span class="date">Oct 16</span>
-		<span class="tags">
-
-</span>
-	    
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
 	</div>
-</article>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
 
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/15/how-to-create-an-nfs-mount-point-on-centos-6-dot-4/">How to Create an NFS Mount Point on CentOS 6.4</a></h2>
-	<div class="meta">
-		<span class="date">Oct 15</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/15/how-to-varnish-and-haproxy/">How to Varnish &amp; HAProxy</a></h2>
-	<div class="meta">
-		<span class="date">Oct 15</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/15/how-to-mysql-user-privileges/">Working With MySQL User Privileges</a></h2>
-	<div class="meta">
-		<span class="date">Oct 15</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-	
-	
-		</section>
-	
-	<section class="archives"><h1 class="year">2012</h1>
-
-<article>
-  <h2 class="title"><a href="/blog/2012/07/22/the-problem-with-pingdom/">The Problem With Pingdom</a></h2>
-	<div class="meta">
-		<span class="date">Jul 22</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/uptime/'>uptime</a>
-
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2012/07/22/intro/">Intro</a></h2>
-	<div class="meta">
-		<span class="date">Jul 22</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/self/'>self</a>
-
-
-</span>
-	    
-	</div>
-</article>
 
 
     </div>

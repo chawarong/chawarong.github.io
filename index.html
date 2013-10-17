@@ -6,7 +6,7 @@
 	<title>Chawarong's Blog</title>
     <meta name="author" content="Chawarong Songserm">
     
-	<meta name="description" content="Published on: Oct 16th, 2013 Tags: Configure network using init networking (text mode) /etc/network/interfaces 12.04 or later $ sudo /etc/init.d/ &hellip;">
+	<meta name="description" content="Published on: Oct 17th, 2013 Tags: Using default vhost to serve unspecified IP &amp; port i.e. Catching every request to any unspecified IP address &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -107,6 +107,66 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/10/17/using-default-in-virtualhost-in-apache/">
+		
+			Using _default_ in VirtualHost in Apache</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-17T23:31:00+07:00" pubdate data-updated="true">Oct 17<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<h4>Using <em>default</em> vhost to serve unspecified IP &amp; port</h4>
+
+<p>i.e. Catching every request to any unspecified IP address and port, i.e., an address/port combination that is not used for any other virtual host</p>
+
+<pre><code>    &lt;VirtualHost _default_:*&gt;
+      DocumentRoot /www/default
+    &lt;/VirtualHost&gt; 
+</code></pre>
+
+<p>A default vhost never serves a request that was sent to an address/port that is used for name-based vhosts.</p>
+
+<pre><code>    &lt;VirtualHost _default_:80&gt;
+    DocumentRoot /www/default80
+    # ...
+    &lt;/VirtualHost&gt;
+
+    &lt;VirtualHost _default_:*&gt;
+    DocumentRoot /www/default
+    # ...
+    &lt;/VirtualHost&gt; 
+</code></pre>
+
+<p>This is the same as the 1st one, but serve port 80 pointing to /www/default80</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">

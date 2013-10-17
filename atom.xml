@@ -4,7 +4,7 @@
   <title><![CDATA[Chawarong's Blog]]></title>
   <link href="http://chawarong.github.io/atom.xml" rel="self"/>
   <link href="http://chawarong.github.io/"/>
-  <updated>2013-10-16T23:58:12+07:00</updated>
+  <updated>2013-10-17T23:34:19+07:00</updated>
   <id>http://chawarong.github.io/</id>
   <author>
     <name><![CDATA[Chawarong Songserm]]></name>
@@ -12,6 +12,37 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using _default_ in VirtualHost in Apache]]></title>
+    <link href="http://chawarong.github.io/blog/2013/10/17/using-default-in-virtualhost-in-apache/"/>
+    <updated>2013-10-17T23:31:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2013/10/17/using-default-in-virtualhost-in-apache</id>
+    <content type="html"><![CDATA[<h4>Using <em>default</em> vhost to serve unspecified IP &amp; port</h4>
+
+<p>i.e. Catching every request to any unspecified IP address and port, i.e., an address/port combination that is not used for any other virtual host</p>
+
+<pre><code>    &lt;VirtualHost _default_:*&gt;
+      DocumentRoot /www/default
+    &lt;/VirtualHost&gt; 
+</code></pre>
+
+<p>A default vhost never serves a request that was sent to an address/port that is used for name-based vhosts.</p>
+
+<pre><code>    &lt;VirtualHost _default_:80&gt;
+    DocumentRoot /www/default80
+    # ...
+    &lt;/VirtualHost&gt;
+
+    &lt;VirtualHost _default_:*&gt;
+    DocumentRoot /www/default
+    # ...
+    &lt;/VirtualHost&gt; 
+</code></pre>
+
+<p>This is the same as the 1st one, but serve port 80 pointing to /www/default80</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to configure networking on Ubuntu]]></title>
