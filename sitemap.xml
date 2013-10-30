@@ -14,7 +14,7 @@
     </url>
     <url>
         <loc>http://chawarong.github.io/blog/2013/10/15/how-to-varnish-and-haproxy/</loc>
-        <lastmod>2013-10-16T06:30:57+07:00</lastmod>
+        <lastmod>2013-10-30T14:32:29+07:00</lastmod>
     </url>
     <url>
         <loc>
@@ -38,11 +38,11 @@
         <loc>
             http://chawarong.github.io/blog/2013/10/28/how-to-migrate-jenkins-to-a-new-server/
         </loc>
-        <lastmod>2013-10-28T23:43:05+07:00</lastmod>
+        <lastmod>2013-10-30T14:31:06+07:00</lastmod>
     </url>
     <url>
         <loc>http://chawarong.github.io/blog/archives/</loc>
-        <lastmod>2013-10-28T23:43:05+07:00</lastmod>
+        <lastmod>2013-10-30T14:32:29+07:00</lastmod>
     </url>
     <url>
         <loc>http://chawarong.github.io/blog/categories/</loc>
@@ -51,6 +51,16 @@
     <url>
         <loc>http://chawarong.github.io/about/</loc>
         <lastmod>2013-10-16T06:30:57+07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://chawarong.github.io/archives/2013-10-15-how-to-varnish-and-haproxy.html</loc>
+        <lastmod>2013-10-30T14:32:15+07:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://chawarong.github.io/archives/2013-10-28-how-to-migrate-jenkins-to-a-new-server.html
+        </loc>
+        <lastmod>2013-10-30T14:30:53+07:00</lastmod>
     </url>
     <url>
         <loc>http://chawarong.github.io/robots.txt</loc>
@@ -62,6 +72,6 @@
     </url>
     <url>
         <loc>http://chawarong.github.io/</loc>
-        <lastmod>2013-10-28T23:43:05+07:00</lastmod>
+        <lastmod>2013-10-30T14:32:29+07:00</lastmod>
     </url>
 </urlset>
