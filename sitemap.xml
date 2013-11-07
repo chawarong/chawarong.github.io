@@ -41,8 +41,14 @@
         <lastmod>2013-10-30T14:31:06+07:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://chawarong.github.io/blog/2013/11/07/some-bash-shell-tips-and-tricks-i-love-to-share/
+        </loc>
+        <lastmod>2013-11-07T16:58:28+07:00</lastmod>
+    </url>
+    <url>
         <loc>http://chawarong.github.io/blog/archives/</loc>
-        <lastmod>2013-10-30T14:32:29+07:00</lastmod>
+        <lastmod>2013-11-07T16:58:28+07:00</lastmod>
     </url>
     <url>
         <loc>http://chawarong.github.io/blog/categories/</loc>
@@ -72,6 +78,6 @@
     </url>
     <url>
         <loc>http://chawarong.github.io/</loc>
-        <lastmod>2013-10-30T14:32:29+07:00</lastmod>
+        <lastmod>2013-11-07T16:58:28+07:00</lastmod>
     </url>
 </urlset>
