@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Blog Archives - Chawarong's Blog</title>
+	<title>How To Check If Ubuntu Is Desktop Or Server - Chawarong's Blog</title>
     <meta name="author" content="Chawarong Songserm">
     
-	<meta name="description" content="2013 How to Check if Ubuntu Is Desktop or Server Nov 22 Some Bash Shell Tips and Tricks I Love to Share Nov 7 How to Migrate Jenkins to a New Server &hellip;">
+	<meta name="description" content="&ldquo;Desktop or server&rdquo; is not a binary thing &ndash; it&rsquo;s possible to have some desktop components installed on a machine originally &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -106,173 +106,67 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        
+        <article class="post">
+	<h2 class="title">How to Check if Ubuntu Is Desktop or Server</h2>
+	<div class="entry-content"><p>&ldquo;Desktop or server&rdquo; is not a binary thing &ndash; it&rsquo;s possible to have some desktop components installed on a machine originally installed as a server, etc.</p>
+
+<p>However, there are some tips available to find that out.</p>
+
+<p>Check a package</p>
+
+<pre><code>$ dpkg -l ubuntu-desktop                               ;# will tell you if the desktop components are installed.
+</code></pre>
+
+<p>Login to the terminal to see Welcome message or <code>cat /etc/motd</code></p>
+
+<p>Desktop</p>
+
+<pre><code>    Welcome to Ubuntu 12.04 LTS (GNU/Linux 3.2.0-29-generic i686)
+
+     * Documentation:  https://help.ubuntu.com/
+</code></pre>
+
+<p>Server</p>
+
+<pre><code>    Welcome to Ubuntu 12.04.1 LTS (GNU/Linux 3.2.0-29-generic x86_64)
+
+     * Documentation:  https://help.ubuntu.com/
+
+      System information as of Thu Nov 21 13:23:37 ICT 2013
+
+      System load:  0.0                Processes:           185
+      Usage of /:   70.7% of 60.90GB   Users logged in:     1
+      Memory usage: 57%                IP address for eth0: 10.225.50.163
+      Swap usage:   8%
+
+      =&gt; There are 13 zombie processes.
+
+      Graph this data and manage this system at https://landscape.canonical.com/
+
+    134 packages can be updated.
+    66 updates are security updates.
+</code></pre>
+</div>
+
+<div class="meta">
 	
-
-
-	
-	
-	<section class="archives"><h1 class="year">2013</h1>
-
-<article>
-  <h2 class="title"><a href="/blog/2013/11/22/how-to-check-if-ubuntu-is-desktop-or-server/">How to Check if Ubuntu Is Desktop or Server</a></h2>
-	<div class="meta">
-		<span class="date">Nov 22</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
+</div>
 </article>
 
-
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/11/07/some-bash-shell-tips-and-tricks-i-love-to-share/">Some Bash Shell Tips and Tricks I Love to Share</a></h2>
-	<div class="meta">
-		<span class="date">Nov  7</span>
-		<span class="tags">
-
-</span>
-	    
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
 	</div>
-</article>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
 
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/28/how-to-migrate-jenkins-to-a-new-server/">How to Migrate Jenkins to a New Server</a></h2>
-	<div class="meta">
-		<span class="date">Oct 28</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/17/using-default-in-virtualhost-in-apache/">Using _default_ in VirtualHost in Apache</a></h2>
-	<div class="meta">
-		<span class="date">Oct 17</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/16/how-to-configure-networking-on-ubuntu/">How to Configure Networking on Ubuntu</a></h2>
-	<div class="meta">
-		<span class="date">Oct 16</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/15/how-to-create-an-nfs-mount-point-on-centos-6-dot-4/">How to Create an NFS Mount Point on CentOS 6.4</a></h2>
-	<div class="meta">
-		<span class="date">Oct 15</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/15/how-to-varnish-and-haproxy/">How to Varnish &amp; HAProxy</a></h2>
-	<div class="meta">
-		<span class="date">Oct 15</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/15/how-to-mysql-user-privileges/">Working With MySQL User Privileges</a></h2>
-	<div class="meta">
-		<span class="date">Oct 15</span>
-		<span class="tags">
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-	
-	
-		</section>
-	
-	<section class="archives"><h1 class="year">2012</h1>
-
-<article>
-  <h2 class="title"><a href="/blog/2012/07/22/the-problem-with-pingdom/">The Problem With Pingdom</a></h2>
-	<div class="meta">
-		<span class="date">Jul 22</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/uptime/'>uptime</a>
-
-
-</span>
-	    
-	</div>
-</article>
-
-
-	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2012/07/22/intro/">Intro</a></h2>
-	<div class="meta">
-		<span class="date">Jul 22</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/self/'>self</a>
-
-
-</span>
-	    
-	</div>
-</article>
 
 
     </div>

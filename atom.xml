@@ -4,7 +4,7 @@
   <title><![CDATA[Chawarong's Blog]]></title>
   <link href="http://chawarong.github.io/atom.xml" rel="self"/>
   <link href="http://chawarong.github.io/"/>
-  <updated>2013-11-07T16:58:40+07:00</updated>
+  <updated>2013-11-22T11:57:09+07:00</updated>
   <id>http://chawarong.github.io/</id>
   <author>
     <name><![CDATA[Chawarong Songserm]]></name>
@@ -12,6 +12,52 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How To Check If Ubuntu Is Desktop Or Server]]></title>
+    <link href="http://chawarong.github.io/blog/2013/11/22/how-to-check-if-ubuntu-is-desktop-or-server/"/>
+    <updated>2013-11-22T11:54:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2013/11/22/how-to-check-if-ubuntu-is-desktop-or-server</id>
+    <content type="html"><![CDATA[<p>&ldquo;Desktop or server&rdquo; is not a binary thing &ndash; it&rsquo;s possible to have some desktop components installed on a machine originally installed as a server, etc.</p>
+
+<p>However, there are some tips available to find that out.</p>
+
+<p>Check a package</p>
+
+<pre><code>$ dpkg -l ubuntu-desktop                               ;# will tell you if the desktop components are installed.
+</code></pre>
+
+<p>Login to the terminal to see Welcome message or <code>cat /etc/motd</code></p>
+
+<p>Desktop</p>
+
+<pre><code>    Welcome to Ubuntu 12.04 LTS (GNU/Linux 3.2.0-29-generic i686)
+
+     * Documentation:  https://help.ubuntu.com/
+</code></pre>
+
+<p>Server</p>
+
+<pre><code>    Welcome to Ubuntu 12.04.1 LTS (GNU/Linux 3.2.0-29-generic x86_64)
+
+     * Documentation:  https://help.ubuntu.com/
+
+      System information as of Thu Nov 21 13:23:37 ICT 2013
+
+      System load:  0.0                Processes:           185
+      Usage of /:   70.7% of 60.90GB   Users logged in:     1
+      Memory usage: 57%                IP address for eth0: 10.225.50.163
+      Swap usage:   8%
+
+      =&gt; There are 13 zombie processes.
+
+      Graph this data and manage this system at https://landscape.canonical.com/
+
+    134 packages can be updated.
+    66 updates are security updates.
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Some Bash shell tips and tricks I love to share]]></title>
