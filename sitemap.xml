@@ -53,8 +53,14 @@
         <lastmod>2013-11-22T11:56:30+07:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://chawarong.github.io/blog/2013/12/04/how-to-add-headless-functionality-to-my-cucumber-testing-stack/
+        </loc>
+        <lastmod>2013-12-04T15:59:12+07:00</lastmod>
+    </url>
+    <url>
         <loc>http://chawarong.github.io/blog/archives/</loc>
-        <lastmod>2013-11-22T11:56:30+07:00</lastmod>
+        <lastmod>2013-12-04T15:59:12+07:00</lastmod>
     </url>
     <url>
         <loc>http://chawarong.github.io/blog/categories/</loc>
@@ -84,6 +90,6 @@
     </url>
     <url>
         <loc>http://chawarong.github.io/</loc>
-        <lastmod>2013-11-22T11:56:30+07:00</lastmod>
+        <lastmod>2013-12-04T15:59:12+07:00</lastmod>
     </url>
 </urlset>

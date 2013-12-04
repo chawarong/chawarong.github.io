@@ -6,7 +6,7 @@
 	<title>Chawarong's Blog</title>
     <meta name="author" content="Chawarong's Blog on Hacker Stuff">
     
-	<meta name="description" content="Published on: Nov 22nd, 2013 Tags: &ldquo;Desktop or server&rdquo; is not a binary thing &ndash; it&rsquo;s possible to have some desktop components &hellip;">
+	<meta name="description" content="Published on: Dec 4th, 2013 Tags: Install these packages $ sudo apt-get install xvfb ;# a framebuffer, the magic behind headless $ sudo apt-get &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -107,6 +107,98 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/12/04/how-to-add-headless-functionality-to-my-cucumber-testing-stack/">
+		
+			How to Add Headless Functionality to My Cucumber Testing Stack</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-04T15:52:00+07:00" pubdate data-updated="true">Dec 4<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<ul>
+<li><p>Install these packages</p>
+
+<pre><code>  $ sudo apt-get install xvfb         ;# a framebuffer, the magic behind headless
+  $ sudo apt-get install firefox      
+  $ sudo apt-get install ffmpeg       ;# take care of video conversion
+</code></pre></li>
+<li><p>In a CI script, do this:</p>
+
+<pre><code>  #!/bin/bash
+  echo "gem 'headless'" &gt;&gt; ./Gemfile
+  read -d '' cucumber_append &lt;&lt;EOF
+
+  if Capybara.current_driver == :selenium
+
+    require 'headless'
+    headless = Headless.new(:dimentions =&gt; "1366x768x24")
+    headless.start
+
+    at_exit do
+      headless.destroy
+    end
+
+    Before do
+      headless.video.start_capture
+    end
+
+    After do |scenario|
+      if scenario.failed?
+        headless.video.stop_and_save(video_path(scenario))
+      else
+        headless.video.stop_and_discard
+      end
+    end
+
+    def video_path(scenario)
+      "#{scenario.name.split.join("_")}.mov"
+    end
+
+  end
+  EOF
+  echo "" &gt;&gt; ./features/support/env.rb
+  echo "$cucumber_append" &gt;&gt; ./features/support/env.rb
+  echo "" &gt;&gt; ./Gemfile
+  echo "gem 'capistrano_colors'" &gt;&gt; ./Gemfile
+
+  rvm use 1.9.3-p286
+  bundle install
+  bundle exec rake db:migrate RAILS_ENV=test
+
+  #bundle exec cucumber features/userstory/a -r features/
+  bundle exec cucumber --color 
+</code></pre></li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -895,60 +987,10 @@ bullshit?</p></blockquote>
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/07/22/intro/">
-		
-			Intro</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-22T08:23:00+07:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/self/'>self</a>
-
-
-</div>
-    </div>
-		<p>Testing!</p>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sollicitudin, massa eu vestibulum laoreet, nibh ante vulputate lorem, ac lobortis ante tellus eu mi. Duis sem nisi, luctus at feugiat eget, fringilla ut tellus. Nam a molestie justo. Sed pulvinar est vitae tellus semper tincidunt. Fusce euismod luctus lacus nec placerat. Mauris rutrum scelerisque nulla ut tempor. Nunc porttitor posuere mi, aliquet vehicula lorem feugiat in. Ut ut fermentum risus. Aliquam tincidunt ultricies ante sit amet bibendum. Cras nec sapien odio. Duis posuere congue sem, at congue massa faucibus at.</p>
-
-<p>Integer ut sapien eget nisl auctor faucibus ut fermentum arcu. Nunc rutrum urna non risus congue et tristique felis eleifend. Maecenas blandit est eu mauris aliquam aliquet. Quisque porttitor enim eget risus blandit in mollis orci eleifend. Nam malesuada nulla sed lacus elementum placerat accumsan arcu rhoncus. Phasellus feugiat cursus turpis nec facilisis. Duis eget metus arcu, eget commodo velit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer cursus vulputate enim, vel gravida velit faucibus et. Ut a urna vitae tellus cursus rhoncus. Maecenas at odio eget quam cursus elementum. Aliquam vitae eros quis tellus laoreet accumsan sed id lorem. Suspendisse et rutrum leo. Integer scelerisque vestibulum adipiscing. In posuere, libero ac accumsan suscipit, nulla ligula gravida erat, ut tempor odio erat nec sem. Quisque justo ipsum, adipiscing volutpat varius vitae, blandit eget nisi.</p>
-
-<p>Nullam adipiscing neque ac lacus commodo vitae imperdiet dui sollicitudin. Ut ac nunc augue. Nam at sem ut quam commodo aliquet vitae vitae dui. Vivamus scelerisque felis eget dolor cursus feugiat. Phasellus at dui sed lectus scelerisque pretium. Etiam nec massa ut justo vestibulum fringilla ac vitae urna. Morbi tortor erat, tempus sed consectetur at, elementum nec eros. Vivamus mattis arcu a sapien semper non lacinia eros pretium.</p>
-
-<p>Proin ut hendrerit arcu. Maecenas ullamcorper tristique magna vel mattis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam tincidunt euismod viverra. In sit amet neque turpis. Suspendisse ac sapien mi, id blandit purus. Ut tortor turpis, rutrum ac tempor at, accumsan sit amet erat. Etiam ultricies eleifend dolor, eget tempus justo tristique vitae. In hac habitasse platea dictumst. Aliquam eu enim neque.</p>
-
-<p>Morbi massa lorem, viverra non dictum at, malesuada vel nibh. Nam fermentum lobortis varius. Sed a nulla lacus, quis posuere risus. Nunc id urna libero, quis rutrum mi. In gravida felis urna. Praesent nec dolor ac urna tempor fermentum. Curabitur rutrum arcu et lorem volutpat viverra.</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
+    
+        <a href="/blog/page/2/" class="next">Next</a>
     
     <div class="center"><a href="/blog/archives">Blog Archives</a></div>
 </nav>
