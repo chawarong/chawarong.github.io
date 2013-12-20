@@ -59,8 +59,14 @@
         <lastmod>2013-12-04T15:59:12+07:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://chawarong.github.io/blog/2013/12/20/my-git-experiment-while-working-on-commits/
+        </loc>
+        <lastmod>2013-12-20T13:55:51+07:00</lastmod>
+    </url>
+    <url>
         <loc>http://chawarong.github.io/blog/archives/</loc>
-        <lastmod>2013-12-04T15:59:12+07:00</lastmod>
+        <lastmod>2013-12-20T13:55:51+07:00</lastmod>
     </url>
     <url>
         <loc>http://chawarong.github.io/blog/categories/</loc>
@@ -90,6 +96,6 @@
     </url>
     <url>
         <loc>http://chawarong.github.io/</loc>
-        <lastmod>2013-12-04T15:59:12+07:00</lastmod>
+        <lastmod>2013-12-20T13:55:51+07:00</lastmod>
     </url>
 </urlset>

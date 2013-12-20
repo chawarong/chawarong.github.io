@@ -6,7 +6,7 @@
 	<title>Chawarong's Blog</title>
     <meta name="author" content="Chawarong's Blog on Hacker Stuff">
     
-	<meta name="description" content="Published on: Dec 4th, 2013 Tags: Install these packages $ sudo apt-get install xvfb ;# a framebuffer, the magic behind headless $ sudo apt-get &hellip;">
+	<meta name="description" content="Published on: Dec 20th, 2013 Tags: While I was working with my code, I noticed that something about git wasn&rsquo;t the way I understood it should &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -107,6 +107,166 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/12/20/my-git-experiment-while-working-on-commits/">
+		
+			My Git Experiment While Working on Commits</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-20T13:48:00+07:00" pubdate data-updated="true">Dec 20<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>While I was working with my code, I noticed that something about git wasn&rsquo;t the way I understood it should. Here are my experiments.</p>
+
+<h4>git commit w/o filename</h4>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git add broadway  
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status  
+
+    # On branch master
+    # Your branch is ahead of 'origin/master' by 2 commits.
+    #
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   new file:   broadway
+    #
+    # Changes not staged for commit:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    #   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+    #
+    #   modified:   folsom
+    #
+</code></pre>
+
+<p>&ldquo;Changes to be commited:&rdquo; means that if you do a <code>git commit</code> w/o filenames, it will commit these files.
+Why? it&rsquo;s because those files are in index tree (i.e. stagging tree) and ready to be committed.</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git commit -m "add broadway" 
+    [master 4c9bd0d] add broadway
+     0 files changed
+     create mode 100644 boulder/broadway
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch master
+    # Your branch is ahead of 'origin/master' by 3 commits.
+    #
+    # Changes not staged for commit:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    #   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+    #
+    #   modified:   folsom
+    #
+    no changes added to commit (use "git add" and/or "git commit -a")
+</code></pre>
+
+<p>&ldquo;Changes not staged for commit:&rdquo; means that if you do a <code>git commit</code> w/o filename, it won&rsquo;t commit these files.<br/>
+It&rsquo;s because these files are in working tree (not yet in stagging tree)</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git help commit
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git add folsom
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch master
+    # Your branch is ahead of 'origin/master' by 3 commits.
+    #
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   modified:   folsom
+    #
+</code></pre>
+
+<p>Doing <code>git add filename</code> on a &ldquo;modified&rdquo; file will just add this not-staged file to a stagging tree</p>
+
+<p><em>Warning:</em> removing &ldquo;modified&rdquo; file (not a newly added one) in &ldquo;Changes to be committed&rdquo; using <code>$ git rm --cache</code>
+will just &ldquo;completely&rdquo; remove the file&rsquo;s content from the index tree (i.e. stagging tree)</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch develop
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   modified:   folsom
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git rm --cache folsom
+    rm 'folsom'
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch develop
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   deleted:    folsom                            &lt;&lt;&lt;&lt; watch out for this, it's gonna delete your file
+</code></pre>
+
+<p>To undo the above, just <code>git add</code> it again</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git add folsom
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch develop
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   modified:   folsom                           &lt;&lt;&lt;&lt; it's back!!!
+</code></pre>
+
+<p>If you really want to remove &ldquo;modified&rdquo; file, use <code>git reset -- &lt;filename&gt;</code> instead</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git reset -- folsom
+
+    Unstaged changes after reset:
+    M   folsom
+    M   Gemfile.lock
+    M   features/application/group/folsom.feature
+    M   features/application/folsom/folsom_security.feature
+    M   features/applicationfolsom/step_definitions/folsom_security_steps.rb
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch develop
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #
+    # Changes not staged for commit:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    #   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+    #
+    #   modified:   folsom                          &lt;&lt;&lt;&lt; it's back down to unstagged area
+    #   modified:   Gemfile.lock
+    #   modified:   features/application/group/folsom.feature
+    #   modified:   features/application/folsom/folsom_security.feature
+    #   modified:   features/application/folsom/step_definitions/folsom_security_steps.rb
+    #
+</code></pre>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -912,71 +1072,6 @@ or /etc/resolvconf/run/resolv.conf</p>
 </code></pre></li>
 </ol>
 
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="http://google.com">
-		
-			The Problem With Pingdom</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-22T19:13:00+07:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/uptime/'>uptime</a>
-
-
-</div>
-    </div>
-		
-
-<figure class='code'><figcaption><span>Time to be Awesome - awesome.rb </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Awesome!&quot;</span> <span class="k">unless</span> <span class="n">lame</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://www.pingdom.com%20Pingdom">The problem with pingdom.</a></p>
-
-<p>My money&rsquo;s in that office, right? If she start giving me some bullshit about it ain&rsquo;t there, and we got to go someplace else and get it, I&rsquo;m gonna shoot you in the head then and there. Then I&rsquo;m gonna shoot that bitch in the kneecaps, find out where my goddamn money is. She gonna tell me too. Hey, look at me when I&rsquo;m talking to you, motherfucker. You listen: we go in there, and that nigga Winston or anybody else is in there, you the first motherfucker to get shot. You understand?</p>
-
-<blockquote><p>Blockquote is what goes
-inside this block here
-would you believe that
-bullshit?</p></blockquote>
-
-<p>Well, the way they make shows is, they make one show. That show&rsquo;s called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they&rsquo;re going to make more shows. Some pilots get picked and become television programs. Some don&rsquo;t, become nothing. She starred in one of the ones that became nothing.</p>
-
-<p>The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother&rsquo;s keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee.</p>
-
-<p>Your bones don&rsquo;t break, mine do. That&rsquo;s clear. Your cells react to bacteria and viruses differently than mine. You don&rsquo;t get sick, I do. That&rsquo;s also clear. But for some reason, you and I react the exact same way to water. We swallow it too fast, we choke. We get some in our lungs, we drown. However unreal it may seem, we are connected, you and I. We&rsquo;re on the same curve, just on opposite ends.</p>
-
-<p>Do you see any Teletubbies in here? Do you see a slender plastic tag clipped to my shirt with my name printed on it? Do you see a little Asian child with a blank expression on his face sitting outside on a mechanical helicopter that shakes when you put quarters in it? No? Well, that&rsquo;s what you see at a toy store. And you must think you&rsquo;re in a toy store, because you&rsquo;re here shopping for an infant named Jeb.</p>
 
 		
 		

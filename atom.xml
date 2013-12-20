@@ -4,7 +4,7 @@
   <title><![CDATA[Chawarong's Blog]]></title>
   <link href="http://chawarong.github.io/atom.xml" rel="self"/>
   <link href="http://chawarong.github.io/"/>
-  <updated>2013-12-04T16:00:24+07:00</updated>
+  <updated>2013-12-20T13:56:12+07:00</updated>
   <id>http://chawarong.github.io/</id>
   <author>
     <name><![CDATA[Chawarong's Blog on Hacker Stuff]]></name>
@@ -12,6 +12,137 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[My Git experiment while working on commits]]></title>
+    <link href="http://chawarong.github.io/blog/2013/12/20/my-git-experiment-while-working-on-commits/"/>
+    <updated>2013-12-20T13:48:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2013/12/20/my-git-experiment-while-working-on-commits</id>
+    <content type="html"><![CDATA[<p>While I was working with my code, I noticed that something about git wasn&rsquo;t the way I understood it should. Here are my experiments.</p>
+
+<h4>git commit w/o filename</h4>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git add broadway  
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status  
+
+    # On branch master
+    # Your branch is ahead of 'origin/master' by 2 commits.
+    #
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   new file:   broadway
+    #
+    # Changes not staged for commit:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    #   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+    #
+    #   modified:   folsom
+    #
+</code></pre>
+
+<p>&ldquo;Changes to be commited:&rdquo; means that if you do a <code>git commit</code> w/o filenames, it will commit these files.
+Why? it&rsquo;s because those files are in index tree (i.e. stagging tree) and ready to be committed.</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git commit -m "add broadway" 
+    [master 4c9bd0d] add broadway
+     0 files changed
+     create mode 100644 boulder/broadway
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch master
+    # Your branch is ahead of 'origin/master' by 3 commits.
+    #
+    # Changes not staged for commit:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    #   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+    #
+    #   modified:   folsom
+    #
+    no changes added to commit (use "git add" and/or "git commit -a")
+</code></pre>
+
+<p>&ldquo;Changes not staged for commit:&rdquo; means that if you do a <code>git commit</code> w/o filename, it won&rsquo;t commit these files.<br/>
+It&rsquo;s because these files are in working tree (not yet in stagging tree)</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git help commit
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git add folsom
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch master
+    # Your branch is ahead of 'origin/master' by 3 commits.
+    #
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   modified:   folsom
+    #
+</code></pre>
+
+<p>Doing <code>git add filename</code> on a &ldquo;modified&rdquo; file will just add this not-staged file to a stagging tree</p>
+
+<p><em>Warning:</em> removing &ldquo;modified&rdquo; file (not a newly added one) in &ldquo;Changes to be committed&rdquo; using <code>$ git rm --cache</code>
+will just &ldquo;completely&rdquo; remove the file&rsquo;s content from the index tree (i.e. stagging tree)</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch develop
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   modified:   folsom
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git rm --cache folsom
+    rm 'folsom'
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch develop
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   deleted:    folsom                            &lt;&lt;&lt;&lt; watch out for this, it's gonna delete your file
+</code></pre>
+
+<p>To undo the above, just <code>git add</code> it again</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git add folsom
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch develop
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #   modified:   folsom                           &lt;&lt;&lt;&lt; it's back!!!
+</code></pre>
+
+<p>If you really want to remove &ldquo;modified&rdquo; file, use <code>git reset -- &lt;filename&gt;</code> instead</p>
+
+<pre><code>    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git reset -- folsom
+
+    Unstaged changes after reset:
+    M   folsom
+    M   Gemfile.lock
+    M   features/application/group/folsom.feature
+    M   features/application/folsom/folsom_security.feature
+    M   features/applicationfolsom/step_definitions/folsom_security_steps.rb
+
+    songserm@songserm-ubt:~/Dropbox/projects/git-dummy/boulder$ git status
+    # On branch develop
+    # Changes to be committed:
+    #   (use "git reset HEAD &lt;file&gt;..." to unstage)
+    #
+    #
+    # Changes not staged for commit:
+    #   (use "git add &lt;file&gt;..." to update what will be committed)
+    #   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+    #
+    #   modified:   folsom                          &lt;&lt;&lt;&lt; it's back down to unstagged area
+    #   modified:   Gemfile.lock
+    #   modified:   features/application/group/folsom.feature
+    #   modified:   features/application/folsom/folsom_security.feature
+    #   modified:   features/application/folsom/step_definitions/folsom_security_steps.rb
+    #
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to add headless functionality to my cucumber testing stack]]></title>
