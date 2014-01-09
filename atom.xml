@@ -4,14 +4,79 @@
   <title><![CDATA[Chawarong's Blog]]></title>
   <link href="http://chawarong.github.io/atom.xml" rel="self"/>
   <link href="http://chawarong.github.io/"/>
-  <updated>2013-12-20T13:56:12+07:00</updated>
+  <updated>2014-01-09T15:43:26+07:00</updated>
   <id>http://chawarong.github.io/</id>
   <author>
-    <name><![CDATA[Chawarong's Blog on Hacker Stuff]]></name>
+    <name><![CDATA[Chawarong's Blog on Stuff for Hacker]]></name>
     <email><![CDATA[chawarong@yahoo.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How To Write Capistrano Task For Non Rails]]></title>
+    <link href="http://chawarong.github.io/blog/2014/01/09/how-to-write-capistrano-task-for-non-rails/"/>
+    <updated>2014-01-09T15:39:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2014/01/09/how-to-write-capistrano-task-for-non-rails</id>
+    <content type="html"><![CDATA[<p>Because capistrano is so powerful, sometimes, we want to use it with other things other than Rails. Here is a quick example.</p>
+
+<p>I want to get a single command line output on my remote host e.g. <code>free -m</code></p>
+
+<ul>
+<li><p>Install capistrano</p>
+
+<pre><code>  $ vi Gemfile
+
+      source 'https://rubygems.org'
+      gem 'capistrano', '~&gt; 2.15'
+
+  $ bundle install
+</code></pre></li>
+<li><p>Generate capistrano</p>
+
+<pre><code>  $ capify .
+</code></pre></li>
+<li><p>Create a task</p>
+
+<pre><code>  $ vi config/deploy.rb
+
+      set :application, "my-app-ios"
+
+      set :user, "chawarong.s"
+      set :host, "my.example.com"
+
+      role :web, "#{host}"                          # Your HTTP server, Apache/etc
+      role :app, "#{host}"
+
+      namespace :monitor do
+        task :free do
+          output = capture "free -m"
+          puts output
+
+        end
+      end
+</code></pre></li>
+<li><p>Run it</p>
+
+<pre><code>  $ cap monitor:free
+    * 2014-01-09 15:36:47 executing `monitor:free'
+    * executing "free -m"
+      servers: ["my.example.com"]
+      [my.example.com] executing command
+      command finished in 376ms
+               total       used       free     shared    buffers     cached
+  Mem:          2003       1845        158          0        183        984
+  -/+ buffers/cache:        677       1326
+  Swap:          507          0        507
+
+
+
+  ~        
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[My Git experiment while working on commits]]></title>

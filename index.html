@@ -4,9 +4,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>Chawarong's Blog</title>
-    <meta name="author" content="Chawarong's Blog on Hacker Stuff">
+    <meta name="author" content="Chawarong's Blog on Stuff for Hacker">
     
-	<meta name="description" content="Published on: Dec 20th, 2013 Tags: While I was working with my code, I noticed that something about git wasn&rsquo;t the way I understood it should &hellip;">
+	<meta name="description" content="Published on: Jan 9th, 2014 Tags: Because capistrano is so powerful, sometimes, we want to use it with other things other than Rails. Here is a &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -49,7 +49,7 @@
     <header id="header" class="inner"><!-- for more effects see _animate.scss -->
 <h1 class="animated bounceInDown">
     <div id="headerbg">
-        Chawarong's Blog on Hacker Stuff
+        Chawarong's Blog on Stuff for Hacker
     </div>
 </h1>
 <br>
@@ -107,6 +107,100 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/09/how-to-write-capistrano-task-for-non-rails/">
+		
+			How to Write Capistrano Task for Non Rails</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-09T15:39:00+07:00" pubdate data-updated="true">Jan 9<span>th</span>, 2014</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>Because capistrano is so powerful, sometimes, we want to use it with other things other than Rails. Here is a quick example.</p>
+
+<p>I want to get a single command line output on my remote host e.g. <code>free -m</code></p>
+
+<ul>
+<li><p>Install capistrano</p>
+
+<pre><code>  $ vi Gemfile
+
+      source 'https://rubygems.org'
+      gem 'capistrano', '~&gt; 2.15'
+
+  $ bundle install
+</code></pre></li>
+<li><p>Generate capistrano</p>
+
+<pre><code>  $ capify .
+</code></pre></li>
+<li><p>Create a task</p>
+
+<pre><code>  $ vi config/deploy.rb
+
+      set :application, "my-app-ios"
+
+      set :user, "chawarong.s"
+      set :host, "my.example.com"
+
+      role :web, "#{host}"                          # Your HTTP server, Apache/etc
+      role :app, "#{host}"
+
+      namespace :monitor do
+        task :free do
+          output = capture "free -m"
+          puts output
+
+        end
+      end
+</code></pre></li>
+<li><p>Run it</p>
+
+<pre><code>  $ cap monitor:free
+    * 2014-01-09 15:36:47 executing `monitor:free'
+    * executing "free -m"
+      servers: ["my.example.com"]
+      [my.example.com] executing command
+      command finished in 376ms
+               total       used       free     shared    buffers     cached
+  Mem:          2003       1845        158          0        183        984
+  -/+ buffers/cache:        677       1326
+  Swap:          507          0        507
+
+
+
+  ~        
+</code></pre></li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -991,97 +1085,6 @@ or /etc/resolvconf/run/resolv.conf</p>
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/15/how-to-mysql-user-privileges/">
-		
-			Working With MySQL User Privileges</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-15T21:44:00+07:00" pubdate data-updated="true">Oct 15<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<h4>Allow non localhost db user to connect</h4>
-
-<ol>
-<li><p>allow binding from other hosts other than localhost</p>
-
-<pre><code> vi /etc/mysql/my.cnf
-   remove bind-address = 127.0.0.1
-</code></pre></li>
-<li><p>check and see the current privileges on hosts</p>
-
-<pre><code> mysql&gt; use mysql;
- mysql&gt; select * from user;
-   see if there is host = localhost and user = root which will not allow non localhost to access
-</code></pre></li>
-<li><p>grant the user with % (all hosts)</p>
-
-<pre><code> mysql&gt; GRANT ALL ON *.* TO root@'%' IDENTIFIED BY '[password same as root@local e.g. 5678
- # e.g. GRANT ALL ON *.* TO root@'%' IDENTIFIED BY '5678';
-
- mysql&gt; (optional) delete from user where host = 'localhost' and user = 'root';
- mysql&gt; flush privileges;
-</code></pre></li>
-</ol>
-
-
-<h4>Create a new user</h4>
-
-<ol>
-<li><p>create a user</p>
-
-<pre><code> mysql&gt; CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'mypass';
- mysql&gt; CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypass';
-</code></pre></li>
-<li><p>grant all privileges</p>
-
-<pre><code> mysql&gt; GRANT ALL ON *.* TO 'myuser'@'localhost';
- mysql&gt; GRANT ALL ON *.* TO 'myuser'@'%';
-</code></pre></li>
-</ol>
-
-
-<p>or grant just enough</p>
-
-<pre><code>    mysql&gt; GRANT DELETE,INSERT,SELECT,UPDATE on mydatabase.* TO 'myuser'@'localhost';       
-    mysql&gt; flush privileges;
-</code></pre>
-
-<ol>
-<li><p>to see the privileges</p>
-
-<pre><code> mysql&gt; SHOW GRANTS FOR mysql;
-</code></pre></li>
-</ol>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
     
@@ -1093,9 +1096,9 @@ or /etc/resolvconf/run/resolv.conf</p>
     </div>
     <footer id="footer">
     <div style="display:inline">
-    Copyright &copy; 2013
+    Copyright &copy; 2014
 
-    Chawarong's Blog on Hacker Stuff
+    Chawarong's Blog on Stuff for Hacker
 . Powered by <a href="http://octopress.org">Octopress</a> | 
     Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
 </div>

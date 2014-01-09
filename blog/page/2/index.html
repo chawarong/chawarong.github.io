@@ -4,10 +4,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>Chawarong's Blog</title>
-    <meta name="author" content="Chawarong's Blog on Hacker Stuff">
+    <meta name="author" content="Chawarong's Blog on Stuff for Hacker">
     
-	<meta name="description" content="Published on: Jul 22nd, 2012 Tags: uptime Time to be Awesome - awesome.rb 1
-puts &quot;Awesome!&quot; unless lame The problem with pingdom. My money &hellip;">
+	<meta name="description" content="Published on: Oct 15th, 2013 Tags: Allow non localhost db user to connect allow binding from other hosts other than localhost vi /etc/mysql/my.cnf &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -50,7 +49,7 @@ puts &quot;Awesome!&quot; unless lame The problem with pingdom. My money &hellip
     <header id="header" class="inner"><!-- for more effects see _animate.scss -->
 <h1 class="animated bounceInDown">
     <div id="headerbg">
-        Chawarong's Blog on Hacker Stuff
+        Chawarong's Blog on Stuff for Hacker
     </div>
 </h1>
 <br>
@@ -108,6 +107,97 @@ puts &quot;Awesome!&quot; unless lame The problem with pingdom. My money &hellip
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/10/15/how-to-mysql-user-privileges/">
+		
+			Working With MySQL User Privileges</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-15T21:44:00+07:00" pubdate data-updated="true">Oct 15<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<h4>Allow non localhost db user to connect</h4>
+
+<ol>
+<li><p>allow binding from other hosts other than localhost</p>
+
+<pre><code> vi /etc/mysql/my.cnf
+   remove bind-address = 127.0.0.1
+</code></pre></li>
+<li><p>check and see the current privileges on hosts</p>
+
+<pre><code> mysql&gt; use mysql;
+ mysql&gt; select * from user;
+   see if there is host = localhost and user = root which will not allow non localhost to access
+</code></pre></li>
+<li><p>grant the user with % (all hosts)</p>
+
+<pre><code> mysql&gt; GRANT ALL ON *.* TO root@'%' IDENTIFIED BY '[password same as root@local e.g. 5678
+ # e.g. GRANT ALL ON *.* TO root@'%' IDENTIFIED BY '5678';
+
+ mysql&gt; (optional) delete from user where host = 'localhost' and user = 'root';
+ mysql&gt; flush privileges;
+</code></pre></li>
+</ol>
+
+
+<h4>Create a new user</h4>
+
+<ol>
+<li><p>create a user</p>
+
+<pre><code> mysql&gt; CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'mypass';
+ mysql&gt; CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypass';
+</code></pre></li>
+<li><p>grant all privileges</p>
+
+<pre><code> mysql&gt; GRANT ALL ON *.* TO 'myuser'@'localhost';
+ mysql&gt; GRANT ALL ON *.* TO 'myuser'@'%';
+</code></pre></li>
+</ol>
+
+
+<p>or grant just enough</p>
+
+<pre><code>    mysql&gt; GRANT DELETE,INSERT,SELECT,UPDATE on mydatabase.* TO 'myuser'@'localhost';       
+    mysql&gt; flush privileges;
+</code></pre>
+
+<ol>
+<li><p>to see the privileges</p>
+
+<pre><code> mysql&gt; SHOW GRANTS FOR mysql;
+</code></pre></li>
+</ol>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -237,9 +327,9 @@ bullshit?</p></blockquote>
     </div>
     <footer id="footer">
     <div style="display:inline">
-    Copyright &copy; 2013
+    Copyright &copy; 2014
 
-    Chawarong's Blog on Hacker Stuff
+    Chawarong's Blog on Stuff for Hacker
 . Powered by <a href="http://octopress.org">Octopress</a> | 
     Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
 </div>
