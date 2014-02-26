@@ -4,7 +4,7 @@
   <title><![CDATA[Chawarong's Blog]]></title>
   <link href="http://chawarong.github.io/atom.xml" rel="self"/>
   <link href="http://chawarong.github.io/"/>
-  <updated>2014-01-09T15:43:26+07:00</updated>
+  <updated>2014-02-26T14:46:55+07:00</updated>
   <id>http://chawarong.github.io/</id>
   <author>
     <name><![CDATA[Chawarong's Blog on Stuff for Hacker]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How can I debug my cucumber right in the middle of test run?]]></title>
+    <link href="http://chawarong.github.io/blog/2014/02/26/how-can-i-debug-my-cucumber-right-in-the-middle-of-test-run/"/>
+    <updated>2014-02-26T14:46:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2014/02/26/how-can-i-debug-my-cucumber-right-in-the-middle-of-test-run</id>
+    <content type="html"><![CDATA[<p>I am currently using cucumber/capybara to test my Rails app and now I&rsquo;m facing a problem: how the heck can I debug my test right in the middle?</p>
+
+<p>I have found a gem called pry-debugger and since I use pry, so I just want to give it a try.</p>
+
+<h3>Installation</h3>
+
+<ul>
+<li><p>Install gem &ldquo;pry&rdquo;, &ldquo;pry-debugger&rdquo; in Gemfile</p>
+
+<pre><code>  gem 'pry-rails'
+  gem 'pry-debugger'
+</code></pre></li>
+<li><p>In support/env.rb require the gem</p>
+
+<pre><code>  require 'pry'
+</code></pre></li>
+<li><p>Put <code>binding.pry</code> before the line that you want to debug</p></li>
+<li><p>just run <code>bundle exec cucumber --tags @dev</code>     ; cannot run in Rubymine since there&rsquo;s no pry console REPL</p></li>
+</ul>
+
+
+<p>Reference Links<br/>
+<a href="https://github.com/pry/pry">pry</a><br/>
+<a href="https://github.com/nixme/pry-debugger">pry-debugger</a></p>
+
+<h3>Pry Debugger useful commands</h3>
+
+<ul>
+<li><p>step: Step execution into the next line or method. Takes an optional numeric argument to step multiple times.</p></li>
+<li><p>next: Step over to the next line within the same frame. Also takes an optional numeric argument to step multiple lines.</p></li>
+<li><p>finish: Execute until current stack frame returns.</p></li>
+<li><p>continue: Continue program execution and end the Pry session.</p></li>
+<li><p>breakpoints:  TBD</p></li>
+</ul>
+
+
+<h4>Tips</h4>
+
+<p>Stepping through code often? Add the following shortcuts to ~/.pryrc:</p>
+
+<pre><code>if defined?(PryDebugger)
+  Pry.commands.alias_command 'c', 'continue'
+  Pry.commands.alias_command 's', 'step'
+  Pry.commands.alias_command 'n', 'next'
+  Pry.commands.alias_command 'f', 'finish'
+end
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How To Write Capistrano Task For Non Rails]]></title>

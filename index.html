@@ -6,7 +6,7 @@
 	<title>Chawarong's Blog</title>
     <meta name="author" content="Chawarong's Blog on Stuff for Hacker">
     
-	<meta name="description" content="Published on: Jan 9th, 2014 Tags: Because capistrano is so powerful, sometimes, we want to use it with other things other than Rails. Here is a &hellip;">
+	<meta name="description" content="Published on: Feb 26th, 2014 Tags: I am currently using cucumber/capybara to test my Rails app and now I&rsquo;m facing a problem: how the heck can &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -107,6 +107,90 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/02/26/how-can-i-debug-my-cucumber-right-in-the-middle-of-test-run/">
+		
+			How Can I Debug My Cucumber Right in the Middle of Test Run?</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-26T14:46:00+07:00" pubdate data-updated="true">Feb 26<span>th</span>, 2014</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>I am currently using cucumber/capybara to test my Rails app and now I&rsquo;m facing a problem: how the heck can I debug my test right in the middle?</p>
+
+<p>I have found a gem called pry-debugger and since I use pry, so I just want to give it a try.</p>
+
+<h3>Installation</h3>
+
+<ul>
+<li><p>Install gem &ldquo;pry&rdquo;, &ldquo;pry-debugger&rdquo; in Gemfile</p>
+
+<pre><code>  gem 'pry-rails'
+  gem 'pry-debugger'
+</code></pre></li>
+<li><p>In support/env.rb require the gem</p>
+
+<pre><code>  require 'pry'
+</code></pre></li>
+<li><p>Put <code>binding.pry</code> before the line that you want to debug</p></li>
+<li><p>just run <code>bundle exec cucumber --tags @dev</code>     ; cannot run in Rubymine since there&rsquo;s no pry console REPL</p></li>
+</ul>
+
+
+<p>Reference Links<br/>
+<a href="https://github.com/pry/pry">pry</a><br/>
+<a href="https://github.com/nixme/pry-debugger">pry-debugger</a></p>
+
+<h3>Pry Debugger useful commands</h3>
+
+<ul>
+<li><p>step: Step execution into the next line or method. Takes an optional numeric argument to step multiple times.</p></li>
+<li><p>next: Step over to the next line within the same frame. Also takes an optional numeric argument to step multiple lines.</p></li>
+<li><p>finish: Execute until current stack frame returns.</p></li>
+<li><p>continue: Continue program execution and end the Pry session.</p></li>
+<li><p>breakpoints:  TBD</p></li>
+</ul>
+
+
+<h4>Tips</h4>
+
+<p>Stepping through code often? Add the following shortcuts to ~/.pryrc:</p>
+
+<pre><code>if defined?(PryDebugger)
+  Pry.commands.alias_command 'c', 'continue'
+  Pry.commands.alias_command 's', 'step'
+  Pry.commands.alias_command 'n', 'next'
+  Pry.commands.alias_command 'f', 'finish'
+end
+</code></pre>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1037,44 +1121,6 @@ or /etc/resolvconf/run/resolv.conf</p>
 </code></pre></li>
 </ul>
 
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/15/how-to-varnish-and-haproxy/">
-		
-			How to Varnish &amp; HAProxy</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-15T21:48:00+07:00" pubdate data-updated="true">Oct 15<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		
 
 		
 		

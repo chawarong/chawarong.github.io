@@ -71,8 +71,14 @@
         <lastmod>2014-01-09T15:42:40+07:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://chawarong.github.io/blog/2014/02/26/how-can-i-debug-my-cucumber-right-in-the-middle-of-test-run/
+        </loc>
+        <lastmod>2014-02-26T14:46:41+07:00</lastmod>
+    </url>
+    <url>
         <loc>http://chawarong.github.io/blog/archives/</loc>
-        <lastmod>2014-01-09T15:42:40+07:00</lastmod>
+        <lastmod>2014-02-26T14:46:41+07:00</lastmod>
     </url>
     <url>
         <loc>http://chawarong.github.io/blog/categories/</loc>
@@ -102,6 +108,6 @@
     </url>
     <url>
         <loc>http://chawarong.github.io/</loc>
-        <lastmod>2014-01-09T15:42:40+07:00</lastmod>
+        <lastmod>2014-02-26T14:46:41+07:00</lastmod>
     </url>
 </urlset>
