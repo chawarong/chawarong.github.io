@@ -4,7 +4,7 @@
   <title><![CDATA[Chawarong's Blog]]></title>
   <link href="http://chawarong.github.io/atom.xml" rel="self"/>
   <link href="http://chawarong.github.io/"/>
-  <updated>2014-02-26T14:46:55+07:00</updated>
+  <updated>2014-04-10T13:46:48+07:00</updated>
   <id>http://chawarong.github.io/</id>
   <author>
     <name><![CDATA[Chawarong's Blog on Stuff for Hacker]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to patch Heartbleed on Ubuntu 12.04LTS]]></title>
+    <link href="http://chawarong.github.io/blog/2014/04/10/how-to-patch-heartbleed-on-ubuntu-12-dot-04lts/"/>
+    <updated>2014-04-10T13:39:00+07:00</updated>
+    <id>http://chawarong.github.io/blog/2014/04/10/how-to-patch-heartbleed-on-ubuntu-12-dot-04lts</id>
+    <content type="html"><![CDATA[<p>how-to-upgrade-openssl-to-fix-heartbleed.md</p>
+
+<p>The <a href="http://heartbleed.com/">Heartbleed Bug</a> is a serious vulnerability in the popular OpenSSL cryptographic software library. This weakness allows stealing the information protected, under normal conditions, by the SSL/TLS encryption used to secure the Internet. SSL/TLS provides communication security and privacy over the Internet for applications such as web, email, instant messaging (IM) and some virtual private networks (VPNs).</p>
+
+<h3>Upgrade OpenSSL on Ubuntu 12.04 LTS</h3>
+
+<p><a href="http://www.ubuntu.com/usn/usn-2165-1/">http://www.ubuntu.com/usn/usn-2165-1/</a></p>
+
+<p>Install the patch</p>
+
+<pre><code>$ sudo apt-get update
+$ sudo dpkg --list | grep openssl
+ii  openssl                           1.0.1-4ubuntu5.3      Secure Socket Layer (SSL)...
+
+$ sudo apt-get --only-upgrade install openssl
+$ sudo apt-get install libssl1.0.0
+
+$ sudo dpkg --list | grep openssl
+ii  openssl                           1.0.1-4ubuntu5.12     Secure Socket Layer (SSL)...
+</code></pre>
+
+<p>Check if installed correctly</p>
+
+<pre><code>$ openssl version -a
+OpenSSL 1.0.1 14 Mar 2012
+built on: Mon Apr  7 20:33:29 UTC 2014             &lt;&lt;&lt;&lt; THIS IS THE CORRECT DATE 
+platform: debian-amd64
+options:  bn(64,64) rc4(16x,int) des(idx,cisc,16,int) blowfish(idx) 
+compiler: cc -fPIC -DOPENSSL_PIC -DZLIB -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -m64 -DL_ENDIAN -DTERMIO -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -Wl,-Bsymbolic-functions -Wl,-z,relro -Wa,--noexecstack -Wall -DOPENSSL_NO_TLS1_2_CLIENT -DOPENSSL_MAX_TLS1_2_CIPHER_LENGTH=50 -DMD32_REG_T=int -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM
+OPENSSLDIR: "/usr/lib/ssl"
+</code></pre>
+
+<h3>To install Heartbleed command-line tool to check your service</h3>
+
+<p>Install Go on Mac</p>
+
+<ul>
+<li>download from <a href="https://code.google.com/p/go/downloads/list?q=OpSys-OSX+Type-Installer">https://code.google.com/p/go/downloads/list?q=OpSys-OSX+Type-Installer</a></li>
+<li>Open a terminal</li>
+<li>Set GOPATH in .bashrc
+  export GOPATH=&ldquo;/Users/songserm/Dropbox/projects/go&rdquo;</li>
+</ul>
+
+
+<p>Install Heartbleed on Mac</p>
+
+<pre><code>$ go get github.com/FiloSottile/Heartbleed
+$ go install github.com/FiloSottile/Heartbleed
+</code></pre>
+
+<p>Check your service</p>
+
+<p>Note: you can also use an online tool here <a href="http://filippo.io/Heartbleed/#">http://filippo.io/Heartbleed/#</a></p>
+
+<pre><code>$ cd ~/Dropbox/projects/go/bin
+$ ./Heartbleed www.example.com:443
+2014/04/10 13:31:31 www.example.com:443 - SAFE
+</code></pre>
+
+<p>If not successfull, you should still see the yellow submarine.</p>
+
+<pre><code>$ ./Heartbleed www.example.com:443
+2014/04/10 13:33:05 ([]uint8) {
+ 00000000  02 00 79 68 65 61 72 74  62 6c 65 65 64 2e 66 69  |..yheartbleed.fi|
+ 00000010  6c 69 70 70 6f 2e 69 6f  59 45 4c 4c 4f 57 20 53  |lippo.ioYELLOW S|
+ 00000020  55 42 4d 41 52 49 4e 45  b2 fb b3 7c 8a 8b 9b df  |UBMARINE...|....|
+ 00000030  c5 04 78 e8 62 38 91 30  32 0c cd ad 42 4c 45 00  |..x.b8.02...BLE.|
+ 00000040  00 00 13 00 11 00 00 0e  6f 6e 61 2e 65 78 73 65  |........ona.exse|
+ 00000050  65 64 2e 6e 65 74 00 05  00 05 01 00 00 00 00 00  |ed.net..........|
+ 00000060  0a 00 08 00 06 00 17 00  18 00 19 00 0b 00 02 01  |................|
+ 00000070  00 00 0d 00 0a 00 08 04  01 04 03 02 1d 80 3b 29  |..............;)|
+ 00000080  90 ff 29 31 de 83 00 8a  ce 95 98 ce              |..)1........|
+}
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How can I debug my cucumber right in the middle of test run?]]></title>
